@@ -1,0 +1,66 @@
+.login {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    max-width: 50rem;
+    border: 1px solid #7B3FF2;
+    border-radius: 4px;
+    padding: 5rem 0;
+
+    > .header-wrapper {
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      flex-direction: column;
+
+      > span {
+        text-align: center;
+        font-weight: 600;
+        color: #7B3FF2;
+      }
+
+      > .title {
+        font-size: 1.2rem;
+        margin: 2.5rem 0 1rem 0;
+      }
+    }
+
+    > .auth-form {
+      margin: 3rem 1rem 0;
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+
+      > input, button {
+        padding: 0.5rem 0.3rem;
+        border: 1px solid #7B3FF2;
+        border-radius: 4px;
+        outline: none;
+      }
+
+      > button {
+        background-color: #7B3FF2;
+        color: #FFFFFF;
+        cursor: pointer;
+      }
+    }
+
+    .error-msg {
+      margin-top: 1rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #DE4763;
+    }
+  }
+}
