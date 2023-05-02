@@ -11,37 +11,41 @@ router.post('/login', async (req,res)=> {
 
     const domain = email.split('@').pop()
 
-    //validate it's a joonko email domail - TODO: fix node:22105) UnhandledPromiseRejectionWarning: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    //validate it's a joonko email domain
     if (domain !== "joonko.co"){
-        res.status(401).json({error: 'user email does not contains joonko\'s domain'})
-        return
+        return res.status(401).json({error: 'user email does not contains joonko\'s domain'})
     }
 
-    //validate that user found and password matches
     let userObj = USERS.find(user => user.email === email)
-    console.log(userObj)
+ 
+    //validate that user found and password matches
     if (!userObj){
-        res.status(404).json({error: 'user not found'})
-        return 
+        return res.status(404).json({error: 'user not found'}) 
     }
 
     if(password !== userObj.password){
-        res.status(401).json({error: 'wrong password'})
+        return res.status(401).json({error: 'wrong password'})
     }
 
     res.status(200).cookie("_user_session", JSON.stringify({email})).json({ok: true})
 })
 
 router.get('/jobs', async (req,res)=> {
-    //TODO: wrap with try/catch
-    const session = JSON.parse(req.cookies._user_session)
-    console.log(session)
-    //TODO: verify that user/session exist if not return status 401
-   
-    const userEmail = session.email
+    const session = req.cookies ? req.cookies._user_session : undefined
+
+    if (!session){
+        return res.status(401).json({error: 'cookies does not exist'}) 
+    }
+
+    const userEmail = JSON.parse(session).email
+    const userObj = USERS.find(user => user.email === userEmail) 
+
+    if (!userObj){
+        return res.status(401).json({error: 'user not found'}) 
+    }
 
     let jobs = []
-    let userDepartments = USERS.find(user => user.email === userEmail).departments
+    let userDepartments = userObj.departments
     userDepartments.forEach(department => {
         let departmentjobs = OPEN_JOBS.filter(jobDepartment =>
             jobDepartment.department === department    
